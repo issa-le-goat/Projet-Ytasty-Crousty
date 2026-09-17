@@ -16,4 +16,4 @@ class Product(Base):
     restaurant_id = Column(Integer, ForeignKey("restaurants.id"), nullable=False)
     ingredients = Column(JSON)
 
-    restaurants = relationship("Restaurant", back_populates="products")
+    restaurant = relationship("Restaurant", back_populates="products")

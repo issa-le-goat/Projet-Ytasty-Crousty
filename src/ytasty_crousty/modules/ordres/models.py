@@ -29,7 +29,7 @@ class Order(Base):
     customer_email = Column(String(150))
 
     restaurant = relationship("Restaurant", back_populates="orders")
-    items = realtionship("OrderItem", back_populates="orders")
+    items = relationship("OrderItem", back_populates="order")
 
 class OrderItem(Base):
     __tablename__ = "order_items"

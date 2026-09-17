@@ -2,11 +2,11 @@ from ytasty_crousty.database import SessionLocal, Base, engine
 
 # On importe tous les models pour qu'ils soient enregistrés dans Base
 # avant de créer les tables avec create_all()
-from modules.restaurants.models import Restaurant
-from modules.users.models import User, RoleEnum
-from modules.products.models import Product
-from modules.ordres.models import Order, OrderItem
-from modules.auths.security import pasword_hash
+from ytasty_crousty.modules.restaurants.models import Restaurant
+from ytasty_crousty.modules.users.models import User, RoleEnum
+from ytasty_crousty.modules.products.models import Product
+from ytasty_crousty.modules.ordres.models import Order, OrderItem
+from ytasty_crousty.modules.auths.security import hash_password
 
 RESTAURANT_NAMES = [
     ("Ytasty Crousty Aix", "Aix-en-Provence"),
@@ -20,7 +20,7 @@ def seed():
     db = SessionLocal()
 
     if db.query(Restaurant).count() == 0:
-        for name, city in RESTAURANTS:
+        for name, city in RESTAURANT_NAMES:
             restaurant = Restaurant(
                 name=name,
                 city=city,
@@ -34,7 +34,7 @@ def seed():
 
     existing_admin = db.query(User).filter(User.username == "admin123").first()
     if existing_admin is None:
-        admin = user(
+        admin = User(
             first_name="Admin",
             last_name="Ytasty",
             username="admin123",
