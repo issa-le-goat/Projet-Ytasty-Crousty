@@ -2,6 +2,8 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
+# URL de connexion à Postgres, lue depuis les variables d'environnement
+# (définie dans docker-compose.yml pour le service "api")
 DATABASE_URL = os.getenv(
     "DATABASE_URL", 
     "postgresql://postgres:postgres@db:5432/ytasty_db"
@@ -10,6 +12,7 @@ DATABASE_URL = os.getenv(
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+# Toutes nos tables (models) hériteront de cette classe Base
 Base = declarative_base()
 
 def get_db():
