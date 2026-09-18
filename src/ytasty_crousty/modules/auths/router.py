@@ -15,5 +15,5 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
     if user is None or not verify_password(data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Identifiants invalides")
 
-        token = create_access_token(username=user.username, role=user.role.value)
-        return TokenResponse(access_token=token)
+    token = create_access_token(username=user.username, role=user.role.value)
+    return TokenResponse(access_token=token)
