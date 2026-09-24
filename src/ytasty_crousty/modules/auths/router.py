@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, HTPPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ytasty_crousty.database import get_db
-from ytasty_Crousty.modules.users.models import User
+from ytasty_crousty.modules.users.models import User
 from ytasty_crousty.modules.auths.security import verify_password
 from ytasty_crousty.modules.auths.jwt import create_access_token
-from ytasty_crousty.modules.auths.schema import LoginRequest, TokenResponse
+from ytasty_crousty.modules.auths.schemas import LoginRequest, TokenResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
