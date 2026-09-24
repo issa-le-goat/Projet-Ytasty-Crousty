@@ -1,18 +1,40 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Literal
 from datetime import datetime
 
-# Sous-schéma pour un article de la commande
+# ==========================================
+# SCHÉMAS D'ENTRÉE (Création & Mise à jour)
+# ==========================================
+
+class OrderItemCreate(BaseModel):
+    product_id: int
+    quantity: int = Field(gt=0) # Bloque les quantités négatives ou nulles
+
+class CustomerCreate(BaseModel):
+    name: str
+    email: str
+
+class OrderCreate(BaseModel):
+    restaurant_id: int
+    items: List[OrderItemCreate]
+    pickup_mode: Literal["onsite", "takeaway"]
+    customer: CustomerCreate
+
+class OrderStatusUpdate(BaseModel):
+    status: Literal["pending", "validated", "preparing", "ready", "collected", "cancelled"]
+
+# ==========================================
+# SCHÉMAS DE SORTIE (Réponses API)
+# ==========================================
+
 class OrderItemResponse(BaseModel):
     product_id: int
     quantity: int
 
-# Sous-schéma pour le client
 class CustomerResponse(BaseModel):
     name: str
     email: str
 
-# Schéma principal de la commande
 class OrderResponse(BaseModel):
     order_number: str
     restaurant_id: int
