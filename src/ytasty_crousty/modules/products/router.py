@@ -53,6 +53,26 @@ def create_product(
     db.refresh(new_product)
     return new_product
 
+@router.patch("/{product_id}/availability", response_model=ProductResponse, status_code=status.HTTP_200_OK)
+def update_product(product_id: int,
+        data: ProductCreate,
+        db: Session = Depends(get_db),
+        current_user=Depends(allow_staff_admin_direction)
+):
+    product = db.query(Product).filter(Product.id == product_id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Produit introuvable.")
+
+    if current_user.role.value == "staff" and current_user.restaurant_id != product.restaurant_id:
+        raise HTTPException(status_code=403, detail="Accès refusé.")
+
+    product.name = data.name
+    product.description = data.description
+    product.price = data.price
+    product.is_available = data.is_available
+    db.commit()
+    db.refresh(product)
+    return product
 
 @router.patch("/{product_id}/availability", response_model=ProductResponse, status_code=status.HTTP_200_OK)
 def update_product_availability(
