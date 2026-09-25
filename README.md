@@ -369,27 +369,18 @@ Cette organisation permet de séparer les responsabilités et de faciliter l'év
 
 ---
 
-## État actuel du projet
+## État du projet
 
-Le projet est **en cours de développement**.
-
-L'architecture générale, la connexion à PostgreSQL, les modèles SQLAlchemy ainsi que les premières briques de sécurité sont en place.
-
-Certaines parties restent à implémenter, notamment :
-
-* les routes CRUD des utilisateurs ;
-* les routes CRUD des restaurants ;
-* les routes CRUD des produits ;
-* les routes de gestion des commandes ;
-* les schémas Pydantic associés ;
-* les routes d'authentification ;
-* l'implémentation complète de l'authentification JWT ;
-* l'intégration complète des différentes fonctionnalités dans l'application FastAPI.
-
-L'API contient actuellement une route de vérification :
+L'API contient une route de vérification :
 
 ```http
 GET /health
+```
+
+Et aussi un swagger intégré sur la route:
+
+```http
+GET /docs
 ```
 
 ---
