@@ -16,6 +16,7 @@ class PickupModeEnum(str, enum.Enum):
     onsite = "onsite"
     takeaway = "takeaway"
 
+
 class Order(Base):
     __tablename__ = "orders"
 
@@ -24,7 +25,11 @@ class Order(Base):
     restaurant_id = Column(Integer, ForeignKey("restaurants.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     total_price = Column(Numeric(10, 2), nullable=False)
-    status = Column(Enum(PickupModeEnum), nullable=False)
+
+    # Corrections apportées ici :
+    status = Column(Enum(OrderStatusEnum), nullable=False, default=OrderStatusEnum.pending)
+    pickup_mode = Column(Enum(PickupModeEnum), nullable=False)
+
     customer_name = Column(String(150))
     customer_email = Column(String(150))
 

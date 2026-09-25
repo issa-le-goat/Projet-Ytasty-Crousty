@@ -10,10 +10,12 @@ requires-python = ">=3.14"
 dependencies = [
     "bcrypt<4.1",
     "fastapi>=0.141.1",
+    "ngrok>=1.7.0",
     "passlib[bcrypt]>=1.7.4",
     "psycopg2-binary>=2.9.13",
     "pydantic>=2.13.5",
-    "pyjwt>=2.14.0",
+    "pyjwt>=2.15.0",
+    "python-multipart>=0.0.32",
     "sqlalchemy>=2.0.52",
     "uvicorn>=0.52.4",
 ]
