@@ -53,7 +53,7 @@ def create_product(
     db.refresh(new_product)
     return new_product
 
-@router.patch("/{product_id}/availability", response_model=ProductResponse, status_code=status.HTTP_200_OK)
+@router.patch("/{product_id}", response_model=ProductCreate, status_code=status.HTTP_200_OK)
 def update_product(product_id: int,
         data: ProductCreate,
         db: Session = Depends(get_db),
