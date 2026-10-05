@@ -1,4 +1,5 @@
 from fastapi import FastAPI, status
+from fastapi.middleware.cors import CORSMiddleware
 
 # Importation de tous les routeurs de l'application
 from ytasty_crousty.modules.auths.router import router as auth_router
@@ -11,6 +12,18 @@ app = FastAPI(
     title="Ytasty Crousty API",
     description="API REST pour la gestion du réseau de restaurants Ytasty Crousty.",
     version="1.0.0"
+)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+    "http://localhost:5173",
+    "http://localhost:3000"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.get("/health", status_code=status.HTTP_200_OK, tags=["Health"])
