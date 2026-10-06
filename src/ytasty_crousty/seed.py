@@ -26,12 +26,32 @@ def seed_data():
     db: Session = SessionLocal()
 
     try:
-        # 1. Création des restaurants
+        # 1. Création des restaurants (avec opening_hours et contact)
         restaurants_data = [
-            {"name": "Ytasty Crousty Aix", "city": "Aix-en-Provence", "address": "123 Cours Mirabeau", "is_open": True},
-            {"name": "Ytasty Crousty Paris", "city": "Paris", "address": "45 Avenue des Champs-Élysées",
-             "is_open": True},
-            {"name": "Ytasty Crousty Lyon", "city": "Lyon", "address": "8 Place Bellecour", "is_open": True}
+            {
+                "name": "Ytasty Crousty Aix",
+                "city": "Aix-en-Provence",
+                "address": "123 Cours Mirabeau",
+                "is_open": True,
+                "opening_hours": "11:00 - 23:00",
+                "contact": "04 42 12 34 56"
+            },
+            {
+                "name": "Ytasty Crousty Paris",
+                "city": "Paris",
+                "address": "45 Avenue des Champs-Élysées",
+                "is_open": True,
+                "opening_hours": "11:00 - 00:00",
+                "contact": "01 23 45 67 89"
+            },
+            {
+                "name": "Ytasty Crousty Lyon",
+                "city": "Lyon",
+                "address": "8 Place Bellecour",
+                "is_open": True,
+                "opening_hours": "11:30 - 22:30",
+                "contact": "04 78 90 12 34"
+            }
         ]
 
         created_restaurants = []
@@ -40,11 +60,15 @@ def seed_data():
             if not restaurant:
                 restaurant = Restaurant(**r_data)
                 db.add(restaurant)
-                db.flush()  # Permet de générer l'ID du restaurant immédiatement
+            else:
+                # Mise à jour des champs si le restaurant existe déjà en base mais est incomplet
+                restaurant.opening_hours = r_data["opening_hours"]
+                restaurant.contact = r_data["contact"]
+
+            db.flush()  # Permet de générer ou récupérer l'ID du restaurant immédiatement
             created_restaurants.append(restaurant)
 
         # 2. Création des produits (Catalogue de base)
-        # Attention : adapte les clés (name, description...) selon les noms exacts des colonnes de ton Product
         products_template = [
             {
                 "name": "Le Classic Crousty",
@@ -87,17 +111,14 @@ def seed_data():
         # 3. Affectation des produits à chaque restaurant
         for restaurant in created_restaurants:
             for p_data in products_template:
-                # Vérifie si le produit existe déjà pour ce restaurant
                 existing_product = db.query(Product).filter(
                     Product.name == p_data["name"],
                     Product.restaurant_id == restaurant.id
                 ).first()
 
                 if not existing_product:
-                    # Copie du template et ajout de l'ID du restaurant
                     new_product_data = p_data.copy()
                     new_product_data["restaurant_id"] = restaurant.id
-
                     product = Product(**new_product_data)
                     db.add(product)
 
@@ -114,7 +135,7 @@ def seed_data():
             db.add(admin_user)
 
         db.commit()
-        print("Les données (Restaurants, Produits et Admin) ont été injectées avec succès.")
+        print("Les données (Restaurants, Produits et Admin) ont été injectées et mises à jour avec succès.")
 
     except Exception as e:
         db.rollback()
